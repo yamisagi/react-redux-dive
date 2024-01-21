@@ -66,7 +66,7 @@ In this project, I will be exploring the React Redux library. I will be using th
 ## Roadmap
 
 - [x] Project Setup
-
+- [x] Implement folder structure
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
