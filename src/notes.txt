@@ -1,0 +1,18 @@
+// Core concept of Redux is;
+// 1. Store
+// 2. Action
+// 3. Reducer
+
+// 1. Store: Store is a globalized state which is accessible from anywhere in the application.
+
+// 2. Action: Action is a function which returns an object. This object contains a type and payload. Type is the name of the action and payload is the data which is passed to the reducer.
+
+// 3. Reducer: Reducer is a function which takes the current state and action as an argument and returns the new state. Reducer is the only thing which can update the state.
+
+// Redux is a state management library. It is used to manage the state of an application. Redux is a single source of truth. Redux is a predictable state container for JavaScript apps. Redux makes it easy to manage the state of your application. 
+
+//! But Important thing is that in Redux, we can not directly update the state of Components. We have to dispatch an action to update the state.
+
+//! And reducer is not a hook which we have in React 'useReducer'.
+
+//! One more thing is 'Store' concept in Redux, gives subscription to the components. So, whenever the state changes, the components will be updated automatically.
