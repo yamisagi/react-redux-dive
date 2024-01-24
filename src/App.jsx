@@ -1,9 +1,12 @@
 import './App.css';
+import Counter from './components/product/Counter';
 
 const App = () => {
-  return <>
-  
-    </>;
+  return (
+    <>
+      <Counter />
+    </>
+  );
 };
 
 export default App;

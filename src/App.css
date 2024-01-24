@@ -6,9 +6,70 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  background-image: linear-gradient(90deg, #1e5799 0%, #2989d8 37%, #207cca 100%);
+  background-image: linear-gradient(
+    90deg,
+    #1e5799 0%,
+    #2989d8 37%,
+    #207cca 100%
+  );
   background-repeat: no-repeat;
   min-height: 100vh;
   display: flex;
-  color: white;
+  color: black;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  width: 400px;
+  height: 600px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  width: 100px;
+  height: 40px;
+  background-color: #1e5799;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.btn:hover {
+  background-color: #207cca;
+}
+
+.product__counter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.counter__title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.counter__value {
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.counter__btn-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
