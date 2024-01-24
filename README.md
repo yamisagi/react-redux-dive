@@ -67,6 +67,9 @@ In this project, I will be exploring the React Redux library. I will be using th
 
 - [x] Project Setup
 - [x] Implement folder structure
+- [x] Implement Redux
+- [x] Create NOTES.md
+
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
