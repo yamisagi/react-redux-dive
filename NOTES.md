@@ -182,3 +182,94 @@ const App = () => {
 ---
 
 <br/>
+
+### <span style="color: #c1121f;"> _**How to use Redux in Class-based Components?**_</span>
+
+<br/>
+
+We can use '**connect**' method from 'react-redux' package to connect the Redux with Class-based Components. Because we can not use hooks in Class-based Components.
+
+---
+
+- For example, we have a class-based component called '**Counter**'. And we have to **connect** this component with **Redux**.
+
+```javascript
+
+import { connect } from 'react-redux';
+
+class Counter extends React.Component {
+
+  const handleAdd = () => {
+   // If we were using 'dispatch' in mapDispatchToProps, we could use like this 👇🏻
+
+   //* this.props.dispatch({ type: 'ADD', payload: 10 });
+
+   // But we are using 'increment' in mapDispatchToProps, so we have to use like this 👇🏻
+
+    this.props.increment();
+};
+
+  const handleSubtract = () => {
+    // Same as above 👆🏻
+    // this.props.dispatch({ type: 'SUBTRACT', payload: 5 });
+
+    this.props.decrement();
+  };
+
+  render() {
+    return (
+      <div>
+        <h1>{this.props.state}</h1>
+        <button onClick={this.handleAdd.bind(this)}>
+          Add
+        </button>
+
+        <button onClick={this.handleSubtract.bind(this)}>
+          Subtract
+        </button>
+      </div>
+    );
+  }
+}
+
+// mapStateToProps is a function which is used to get the state from the store.
+
+const mapStateToProps = (state) => {
+  return {
+    state: state,
+  };
+};
+
+// mapDispatchToProps is a function which is used to dispatch an action to the reducer.
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // dispatch: dispatch, // We can use like this.
+    // Or we can use like this 👇🏻
+    // This is cleaner way to use dispatch to me for simple applications.
+    increment: () => dispatch({ type: 'ADD', payload: 10 }),
+    decrement: () => dispatch({ type: 'SUBTRACT', payload: 5 }),
+  };
+};
+
+
+// connect is a method which is used to connect the Redux with Class-based Components. And it takes two arguments.
+
+//First one is mapStateToProps and second one is mapDispatchToProps.
+
+// So first one is used to get the state from the store. And second one is used to dispatch an action to the reducer.
+
+// Like useSelector and useDispatch hooks in React.
+
+// This usage is called 'Decorator' in React or Higher Order Component (HOC).
+
+// We can use like this 👇🏻
+
+//? How this HOC works ?
+//? It takes the Counter component as an argument
+//? And returns the new component with the props which we passed to the connect method.
+
+export default connect(mapStateToProps,mapDispatchToProps)(Counter);
+
+---
+```
