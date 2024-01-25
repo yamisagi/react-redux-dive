@@ -73,3 +73,21 @@ body {
   align-items: center;
   gap: 10px;
 }
+
+@media (max-width: 768px) {
+  .card {
+    width: 300px;
+    height: 500px;
+  }
+  .counter__title {
+    font-size: 16px;
+  }
+  .counter__value {
+    font-size: 24px;
+  }
+  .btn {
+    width: 80px;
+    height: 30px;
+    font-size: 14px;
+  }
+}

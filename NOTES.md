@@ -115,3 +115,70 @@ const reducer = (state = initialState, action) => {
 **React Redux** team now recommends the usage of an extra package called Redux Toolkit and another way of creating the Redux store. But, the createStore() method is not deprecated. It is still available in the Redux package.
 
 ---
+
+### <span style="color: #c1121f;"> _**How to use Redux in React?**_</span>
+
+<br/>
+
+As we see in the above example, we have to create a store using '**createStore**' method from '**redux**' package. And we have to pass a reducer as an argument to the createStore method. And we can also pass **preloadedState** as an argument to the createStore method. Which can be came from the localStorage or from the server.
+
+---
+
+And we have to wrap our application with '**Provider**' component from 'react-redux' package. And we have to pass the store as a prop to the '**Provider**' component. Usually we wrap our **Provider** component with the **root** component of our application.
+
+```javascript
+import { Provider } from 'react-redux';
+
+// Can be imported from the same file or from another file.
+
+import reducer from './reducer';
+
+const store = createStore(reducer, preloadedState);
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+);
+```
+
+---
+
+And we have to use '**useSelector**' hook to get the state from the store. And we have to use '**useDispatch**' hook to dispatch an action to the reducer.
+
+```javascript
+import { useSelector, useDispatch } from 'react-redux';
+
+const App = () => {
+  // useSelector is a hook which is used to get the state from the store.
+  const state = useSelector((state) => state);
+
+  // useDispatch is a hook which is used to dispatch an action to the reducer.
+  const dispatch = useDispatch();
+
+  //! Types of actions are coming from the reducer that we added above. (ADD, SUBTRACT)
+
+  //! Payload is the data which is passed to the reducer. (10, 5)
+
+  return (
+    <div>
+      <h1>{state}</h1>
+
+      {/* dispatch an action to the reducer */}
+
+      <button onClick={() => dispatch({ type: 'ADD', payload: 10 })}>
+        Add
+      </button>
+
+      <button onClick={() => dispatch({ type: 'SUBTRACT', payload: 5 })}>
+        Subtract
+      </button>
+    </div>
+  );
+};
+```
+
+---
+
+<br/>
