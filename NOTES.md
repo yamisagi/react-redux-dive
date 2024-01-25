@@ -92,17 +92,15 @@ store.subscribe(subscription);
 
 // And also we can pass initial state as default value of the state.
 
-//! IMPORTANT: We usually use Object as a state. Object is a reference type. So, we have to return a new object. We never mutate the state, we always return a new state. 
+//! IMPORTANT: We usually use Object as a state. Object is a reference type. So, we have to return a new object. We never mutate the state, we always return a new state.
 
 // Objects & Arrays are working in HEAP. But Primitives are working in STACK.
-// Thats the difference between them. Short explanation is, HEAP is a big memory space. An Object variable knows the pointer which is in STACK. 
-// And this pointer is pointing to address of the Object in HEAP. So, when we create a new Object, we are creating a new pointer in STACK but it still points to the same address in HEAP. 
+// Thats the difference between them. Short explanation is, HEAP is a big memory space. An Object variable knows the pointer which is in STACK.
+// And this pointer is pointing to address of the Object in HEAP. So, when we create a new Object, we are creating a new pointer in STACK but it still points to the same address in HEAP.
 
 // So for example take a look at this 👇🏻
 
-https://gist.github.com/yamisagi/cf858327ec4690344b79b836921c3e27
-
-// ********************
+// https://gist.github.com/yamisagi/cf858327ec4690344b79b836921c3e27
 
 const initialState = {
   counter: 0,
@@ -111,8 +109,11 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD':
+      // We are returning a new object here. Because we never mutate the state.
       return {
-        ...state, // We are spreading the state here. Because we could have more than one state in a Object.
+        // We are spreading the state here. 
+        // Because we could have more than one state in a Object and we want to copy all of them.
+        ...state,
         counter: state.counter + action.payload,
       };
     case 'SUBTRACT':
