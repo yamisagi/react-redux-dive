@@ -1,8 +1,8 @@
-# <span style="color: #8338ec;">Notes for React-Redux</span>
+# <span style="color: #8338ec;">React-Redux Notes</span>
 
 [<img src="https://redux.js.org/img/redux.svg" height="75" alt="Redux Logo" style="display: block; margin: auto;"/>](https://redux.js.org)
 
-### <span style="color: #c1121f;"> _What is React-Redux?_</span>
+### <span style="color: #c1121f;"> _What is Redux?_</span>
 
 **Redux** is a state management library. It is used to manage the state of an application. **Redux** provides a predictable state container for JavaScript applications. It is commonly used with libraries like React to efficiently manage the state of an application in a centralized manner. The core principles of Redux revolve around maintaining the application state in a single store, ensuring that state changes are handled through predictable actions, and employing pure functions called reducers to update the state.
 
@@ -55,15 +55,23 @@ const action = {
 // But we can not use 'useDispatch' hook outside of the React. So, we can use 'store.dispatch' method to dispatch an action.
 
 dispatch(action); // We can use like this if we are using 'useDispatch' hook.
+
 store.dispatch({ type: 'ADD', payload: 10 });
 store.dispatch({ type: 'SUBTRACT', payload: 5 });
 
 // But for better understanding, nowadays we are using React or any other framework or library with Redux.
 
 /* 
+
 If we are not using React or any other framework or library with Redux,
+
 We need to use older ways because for example in React we have simple way 
-to dispatch an action using 'useDispatch' hook to handle all stuffs behind the scenes. For non specific framework or library we have to use 'store.subscribe' method to subscribe the components to the store. So, we are subscribing the components to the store using 'store.subscribe' method. And we are getting the state using 'store.getState' method.
+to dispatch an action using 'useDispatch' hook to handle all stuffs behind the scenes. 
+
+For non specific framework or library we have to use 'store.subscribe' method to subscribe the components to the store. 
+
+So, we are subscribing the components to the store using 'store.subscribe' method. And we are getting the state using 'store.getState' method.
+
 */
 
 // Like this👇🏻
@@ -84,14 +92,34 @@ store.subscribe(subscription);
 
 // And also we can pass initial state as default value of the state.
 
-const initialState = 0;
+//! IMPORTANT: We usually use Object as a state. Object is a reference type. So, we have to return a new object. We never mutate the state, we always return a new state. 
+
+// Objects & Arrays are working in HEAP. But Primitives are working in STACK.
+// Thats the difference between them. Short explanation is, HEAP is a big memory space. An Object variable knows the pointer which is in STACK. 
+// And this pointer is pointing to address of the Object in HEAP. So, when we create a new Object, we are creating a new pointer in STACK but it still points to the same address in HEAP. 
+
+// So for example take a look at this 👇🏻
+
+https://gist.github.com/yamisagi/cf858327ec4690344b79b836921c3e27
+
+// ********************
+
+const initialState = {
+  counter: 0,
+};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD':
-      return state + action.payload;
+      return {
+        ...state, // We are spreading the state here. Because we could have more than one state in a Object.
+        counter: state.counter + action.payload,
+      };
     case 'SUBTRACT':
-      return state - action.payload;
+      return {
+        ...state,
+        counter: state.counter - action.payload,
+      };
     default:
       return state;
   }
@@ -152,7 +180,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const App = () => {
   // useSelector is a hook which is used to get the state from the store.
-  const state = useSelector((state) => state);
+  const state = useSelector((state) => state.counter);
 
   // useDispatch is a hook which is used to dispatch an action to the reducer.
   const dispatch = useDispatch();
@@ -163,7 +191,7 @@ const App = () => {
 
   return (
     <div>
-      <h1>{state}</h1>
+      <h1>{state.counter}</h1>
 
       {/* dispatch an action to the reducer */}
 
@@ -210,6 +238,7 @@ class Counter extends React.Component {
 };
 
   const handleSubtract = () => {
+
     // Same as above 👆🏻
     // this.props.dispatch({ type: 'SUBTRACT', payload: 5 });
 
@@ -219,7 +248,7 @@ class Counter extends React.Component {
   render() {
     return (
       <div>
-        <h1>{this.props.state}</h1>
+        <h1>{this.props.state.counter}</h1>
         <button onClick={this.handleAdd.bind(this)}>
           Add
         </button>
@@ -236,7 +265,7 @@ class Counter extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    state: state,
+    state: state.counter,
   };
 };
 
