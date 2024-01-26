@@ -285,7 +285,7 @@ const mapDispatchToProps = (dispatch) => {
 
 // connect is a method which is used to connect the Redux with Class-based Components. And it takes two arguments.
 
-//First one is mapStateToProps and second one is mapDispatchToProps.
+// First one is mapStateToProps and second one is mapDispatchToProps.
 
 // So first one is used to get the state from the store. And second one is used to dispatch an action to the reducer.
 
