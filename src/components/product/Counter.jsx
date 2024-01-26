@@ -3,7 +3,8 @@ import Button from '../ui/Button';
 import Card from '../ui/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import { ENUM } from '../../reducer/counter-reducer';
-import { counterActions } from '../../store/redux-toolkit-slice';
+import { counterActions } from '../../store/counter-slice';
+import { authActions } from '../../store/auth-slice';
 
 const Counter = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,10 @@ const Counter = () => {
     dispatch(counterActions.decrease());
   };
 
+  const handleLogout = () => {
+    dispatch(authActions.logout());
+  };
+
   return (
     <Card className={'product__counter'}>
       <p className='counter__title' role='heading' aria-level='3'>
@@ -39,6 +44,7 @@ const Counter = () => {
         </Button>
         <Button onClick={handleIncrement}>+</Button>
       </div>
+      <Button onClick={handleLogout}>Logout</Button>
     </Card>
   );
 };

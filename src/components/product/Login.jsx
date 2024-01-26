@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { authActions } from '../../store/redux-toolkit-slice';
+import { authActions } from '../../store/auth-slice';
 
 const Login = () => {
   const dispatch = useDispatch();
