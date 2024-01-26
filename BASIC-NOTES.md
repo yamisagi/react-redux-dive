@@ -1,4 +1,4 @@
-# <span style="color: #8338ec;">React-Redux Notes</span>
+# <span style="color: #8338ec;">React-Redux Basic Notes</span>
 
 [<img src="https://redux.js.org/img/redux.svg" height="75" alt="Redux Logo" style="display: block; margin: auto;"/>](https://redux.js.org)
 
