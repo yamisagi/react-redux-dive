@@ -111,7 +111,7 @@ const reducer = (state = initialState, action) => {
     case 'ADD':
       // We are returning a new object here. Because we never mutate the state.
       return {
-        // We are spreading the state here. 
+        // We are spreading the state here.
         // Because we could have more than one state in a Object and we want to copy all of them.
         ...state,
         counter: state.counter + action.payload,
@@ -301,5 +301,207 @@ const mapDispatchToProps = (dispatch) => {
 
 export default connect(mapStateToProps,mapDispatchToProps)(Counter);
 
----
 ```
+
+---
+
+<br/>
+
+### <span style="color: #c1121f;"> _**How to use Redux Toolkit?**_</span>
+
+<br/>
+
+Redux Toolkit is a package which is created by the Redux team. It is a package which is used to simplify the Redux. Instead of using '**createStore**' method from '**redux**' package, we can use '**configureStore**' method from '**@reduxjs/toolkit**' package. And we can use '**createSlice**' method from '**@reduxjs/toolkit**' package to create a reducer.
+
+---
+
+- For example, we have two state in our application, '**counter**' and '**auth**'.
+- We can create as much as state we want in Redux Toolkit. But we have to create a slice for each state.
+
+  ```javascript
+  // We can use 'createSlice' method from '@reduxjs/toolkit' package to create a reducer.
+  // And we can use 'configureStore' method from '@reduxjs/toolkit' package to create a store.
+
+  import { createSlice } from '@reduxjs/toolkit';
+
+  import { configureStore } from '@reduxjs/toolkit';
+
+  // The 'createSlice' method takes an object as an argument.
+  // And this object contains three properties, name, initialState and reducers.
+  // IMPORTANT: We should give a name to the slice.
+  // Because Redux Toolkit uses the name to auto-generate action type strings.
+  // And one thing is that we don't have to use 'return' keyword in the reducers.
+  // Because Redux Toolkit uses 'immer' inside of it. So, we can mutate the state directly.
+  // Behind the scenes, Redux Toolkit is calling 'produce' from 'immer'
+  // And passing in the current state and the action object to create a new state.
+
+  const counterSlice = createSlice({
+    name: 'counter',
+    initialState: {
+      counter: 0,
+    },
+    reducers: {
+      increment: (state, action) => {
+        state.counter += action.payload;
+      },
+      decrement: (state, action) => {
+        state.counter -= action.payload;
+      },
+    },
+  });
+
+  const authSlice = createSlice({
+    name: 'auth',
+    initialState: {
+      isAuth: false,
+    },
+    reducers: {
+      login: (state) => {
+        state.isAuth = true;
+      },
+      logout: (state) => {
+        state.isAuth = false;
+      },
+    },
+  });
+
+  // We can use 'configureStore' method to create a store.
+
+  const store = configureStore({
+    reducer: {
+      counter: counterSlice.reducer,
+      auth: authSlice.reducer,
+    },
+  });
+
+  // And we can export the actions from the reducers.
+
+  export const counterActions = counterSlice.actions;
+  export const authActions = authSlice.actions;
+
+  export default store;
+  ```
+
+---
+
+- After creating our Toolkit store, same as above, we are passing the store as a prop to the '**Provider**' component. And we are wrapping our application with '**Provider**' component.
+
+  ```javascript
+  import { Provider } from 'react-redux';
+
+  import store from './store';
+
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('root')
+  );
+  ```
+
+---
+
+- Let's secure our **App** component with '**auth**' state. If the user is not authenticated,
+  we will show Login page. If the user is authenticated, we will show Counter page.
+
+  ```javascript
+  import { useSelector } from 'react-redux';
+  import Login from './Login';
+
+  const App = () => {
+    const { isAuth } = useSelector((state) => state.auth);
+
+    return (
+      <div>
+        {!isAuth && <Login />}
+        {isAuth && <Counter />}
+      </div>
+    );
+  };
+
+  export default App;
+  ```
+
+
+---
+
+- And we can use '**useSelector**' hook to get the state from the store. And we can use '**useDispatch**' hook to dispatch an action to the reducer.
+
+  ```javascript
+  import { useSelector, useDispatch } from 'react-redux';
+
+  import { counterActions, authActions } from './store';
+
+  const App = () => {
+    // We are using destructuring here.
+    // Because we have more than one state in the store. (counter, auth)
+
+    const { counter } = useSelector((state) => state.counter);
+
+    const dispatch = useDispatch();
+
+    // As we see here we are using 'counterActions' which we exported from the store.
+    // We are not creating type, just using 'counterActions.increment' and 'counterActions.decrement'.
+    // And we are passing payload as an argument to it.
+    // We can use like this 👇🏻
+
+    const handleAdd = () => {
+      dispatch(counterActions.increment(10));
+    };
+
+    const handleSubtract = () => {
+      dispatch(counterActions.decrement(5));
+    };
+
+    const handleLogout = () => {
+      dispatch(authActions.logout());
+    };
+
+    return (
+      <div>
+        <p>Very Secure App 🔐</p>
+        <h1>{counter}</h1>
+        <button onClick={handleAdd}>Add</button>
+        <button onClick={handleSubtract}>Subtract</button>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
+    );
+  };
+  ```
+
+---
+
+Let's create a simple Login page with Redux Toolkit.
+
+```javascript
+import { useSelector, useDispatch } from 'react-redux';
+
+import { authActions } from './store';
+
+const Login = () => {
+  const { isAuth } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    dispatch(authActions.login());
+  };
+
+  return (
+    <form onSubmit={handleLogin}>
+      <label htmlFor='email'>Email</label>
+      <input type='email' id='email' />
+      <label htmlFor='password'>Password</label>
+      <input type='password' id='password' />
+      <button type='submit'>Login</button>
+    </form>
+  );
+};
+
+export default Login;
+```
+
+---
+
+<br/>
