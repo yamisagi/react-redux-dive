@@ -59,3 +59,5 @@
     - The idea behind here is when we submit the form, we dispatch the action to the reducer. Then our reducer will update the state. So when the state is updated, the useEffect hook will be triggered and make the API call.
 
     - With this approach, we keep data transformation logic in the reducer and side effects in the component.
+
+    - But this is not a good approach because always it is not simple like this. Sometimes we need to make multiple API calls and then dispatch the action to the reducer. So we need to write a lot of code in the component. This is not a good practice.
