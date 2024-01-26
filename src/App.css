@@ -91,3 +91,47 @@ body {
     font-size: 14px;
   }
 }
+
+.login__form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.login__form > label {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.login__form > input {
+  width: 300px;
+  height: 40px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  padding-left: 10px;
+  font-size: 16px;
+}
+
+.login__form > input:focus {
+  border: 2px solid #000;
+}
+
+.login__form > input::placeholder {
+  font-size: 16px;
+}
+
+.login__form > button {
+  width: 100px;
+  height: 40px;
+  background-color: #1e5799;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
