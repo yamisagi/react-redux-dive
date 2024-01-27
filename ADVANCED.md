@@ -21,6 +21,8 @@
     - For example, we want to post a new post to the server. And in our reducer,
       we have notification status. So when we post a new post, we want to show a notification to the user. So we can make an API call in the component and then dispatch the action to the reducer. So the reducer will update the state and then we can show the notification to the user.
 
+      <br/>
+
     ```javascript
     // slice.js
 
@@ -165,6 +167,7 @@
       );
     };
     ```
+    <br/>
 
     - The idea behind here is when the form is submitted, an action is dispatched to the reducer. Subsequently, the useEffect hook is triggered by the state change, initiating an API call. Following the API call, another action is dispatched to the reducer to update the notification state. As a result, the reducer modifies the state, allowing for the display of notifications to the user.
 
@@ -173,10 +176,13 @@
     - But this is not a good approach because always it is not simple like this. Sometimes we need to make multiple API calls and then dispatch the action to the reducer. So we need to write a lot of code in the component. This is not a good practice.
   
   - _Another option we can use write our action creator as a_ **thunk**.
+  
     - What is a thunk?
       > A thunk is a function that wraps an expression to delay its evaluation. In Redux, thunks are used to delay dispatching an action until a later time. They are useful for when we need to dispatch an action in response to a network request.
 
       - So we can write our action creator as a thunk. And then we can dispatch the thunk to the store. And then the thunk will make the API call and then dispatch the action to the reducer. So the reducer will update the state.
+
+      <br/>
 
       ```javascript
 
@@ -288,6 +294,8 @@
 
     - We add applyMiddleware(thunk) to the createStore function. So we can use the Redux-Thunk library to write our action creators as thunks like we did in the previous example.
 
+    <br/>
+
    ```javascript
 
    // store.js
@@ -302,13 +310,15 @@
 
     ```
 
- - What is th **_createAsyncThunk()_** function?
+ - What is the **_createAsyncThunk()_** function?
 
     - Redux-Toolkit has a **_createAsyncThunk()_** function. We can use this function to write our action creators as thunks. 
     - It takes **two** arguments. The first argument is the name of the thunk. And the second argument is a function that returns a promise. And the promise will be resolved with the value that we want to dispatch to the reducer.
     - When we use the **_createAsyncThunk()_** function, it will automatically dispatch three actions for us. The first action is a pending action. The second action is a fulfilled action. And the third action is a rejected action. So we don't need to dispatch these actions manually.
     - And we should add the **_extraReducers_** property to the slice. And then we can add the **_builder.addCase()_** method to the **_extraReducers_** property. And then we can add the **_action type_** and the **_callback function_** to the **_builder.addCase()_** method. 
     - So when the action is dispatched, the callback function will be executed.
+
+    <br/>
 
     ```javascript
 
@@ -390,12 +400,12 @@
 
 ### <span style="color: #c1121f;"> **_Last Words_**</span>
 
-> Thank you for reading, I hope you enjoyed it. 
-> If you have any questions, please feel free to contact me.
-> You can find my contact information on my [GitHub profile](https://github.com/yamisagi).
-> If you want to support me, you can give a star to this repository.
-> And you can follow me on [Twitter](https://twitter.com/_yamisagi).
-> Also appreciated any PR's to improve this document or fix any typo mistakes 🚀
+> * Thank you for reading, I hope you enjoyed it. 
+> * If you have any questions, please feel free to contact me.
+> * You can find my contact information on my [GitHub profile](https://github.com/yamisagi).
+> * If you want to support me, you can give a star to this repository.
+> * And you can follow me on [Twitter](https://twitter.com/_yamisagi).
+> * Also appreciated any PR's to improve this document or fix any typo mistakes 🚀
 
 
 
