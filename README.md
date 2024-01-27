@@ -68,7 +68,19 @@ In this project, I will be exploring the React Redux library. I will be using th
 - [x] Project Setup
 - [x] Implement folder structure
 - [x] Implement Redux
-- [x] Create NOTES.md
+- [x] Create [ADVANCED.md](./ADVANCED.md)
+- [x] Create [BASICS.md](./BASICS.md)
+- [x] Implement React Redux
+- [x] Implement Redux Toolkit
+- [x] Create Slices for Redux Toolkit
+- [x] Explaining the differences between Redux and Redux Toolkit
+- [x] Update [ADVANCED.md](./ADVANCED.md)
+- [x] Update [BASICS.md](./BASICS.md)
+- [x] Implement store with Redux Toolkit
+- [x] Add [LICENSE](./LICENSE)
+- [x] Clean up code and add comments 🧹
+- [x] Willing to add CONTRIBUTING.md 
+- [x] Finish the project 🎉
 
 
 

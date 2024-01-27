@@ -47,7 +47,7 @@
       },
     });
 
-    export const { showNotification } = postSlice.actions;
+    export const { showNotification, addPost } = postSlice.actions;
     ```
 
     ```javascript
@@ -116,6 +116,7 @@
     // PostForm.js
     
     import { useDispatch } from "react-redux";
+    import { postAdded } from "./postsSlice";
 
     // In another component we can post a new post to the server.
 
@@ -137,6 +138,7 @@
     // Notification.js
     
     import { useDispatch, useSelector } from "react-redux";
+    import { showNotification } from "./postsSlice"; 
 
     // In Notification component we can show the notification to the user
     // Based on the notification status etc.
@@ -169,3 +171,243 @@
     - With this approach, we keep data transformation logic in the reducer and side effects in the component.
 
     - But this is not a good approach because always it is not simple like this. Sometimes we need to make multiple API calls and then dispatch the action to the reducer. So we need to write a lot of code in the component. This is not a good practice.
+  
+  - _Another option we can use write our action creator as a_ **thunk**.
+    - What is a thunk?
+      > A thunk is a function that wraps an expression to delay its evaluation. In Redux, thunks are used to delay dispatching an action until a later time. They are useful for when we need to dispatch an action in response to a network request.
+
+      - So we can write our action creator as a thunk. And then we can dispatch the thunk to the store. And then the thunk will make the API call and then dispatch the action to the reducer. So the reducer will update the state.
+
+      ```javascript
+
+      // postsSlice.js
+
+      import { createSlice } from "@reduxjs/toolkit";
+
+      const initialState = {
+        posts: [],
+        notification: {
+          status: "idle",
+          message: "",
+        },
+      };
+
+      const postSlice = createSlice({
+        name: "posts",
+        initialState,
+        reducers: {
+          showNotification(state, action) {
+            state.notification.status = action.payload.status;
+            state.notification.message = action.payload.message;
+          },
+          addPost(state, action) {
+            state.posts.push(action.payload);
+          },
+          // Other reducers
+        },
+      });
+
+      export const sendPostData = (postData) => {
+        return async (dispatch) => {
+          dispatch(
+            showNotification({
+              status: "pending",
+              message: "Sending post data...",
+            })
+          );
+
+          const sendRequest = async () => {
+            const response = await fetch(
+              "https://jsonplaceholder.typicode.com/posts",
+              {
+                method: "POST",
+                body: JSON.stringify(postData),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+
+            if (!response.ok) {
+              throw new Error("Something went wrong!");
+            }
+          };
+
+          try {
+            await sendRequest();
+
+            dispatch(
+              showNotification({
+                status: "success",
+                message: "Successfully sent post data!",
+              })
+            );
+          } catch (error) {
+            dispatch(
+              showNotification({
+                status: "error",
+                message: error.message,
+              })
+            );
+          }
+        };
+      };
+
+      export const { showNotification, addPost } = postSlice.actions;
+
+      export default postSlice.reducer;
+      ```
+
+      ```javascript
+
+      // AnotherComponent.js
+
+      import { useDispatch, useSelector } from "react-redux";
+
+      import { sendPostData } from "./postsSlice";
+
+      // ...
+
+      const { posts } = useSelector((state) => state.posts);
+
+      useEffect(() => {
+        dispatch(sendPostData(posts));
+      }, [posts, dispatch]);
+
+      // ...
+      ```
+
+      - With this approach, we keep data transformation logic in the reducer and side effects in the action creator. And keep our component lean and clean.
+
+  - What is the **Redux-Thunks** library?
+    - In official Redux documentation, they recommend using the **Redux-Thunk** library to write our action creators as thunks.
+
+    - Redux-Thunk is a middleware that allows us to write action creators that return a function instead of an action. The thunk can be used to delay the dispatch of an action, or to dispatch only if a certain condition is met. The inner function receives the store methods dispatch and getState as parameters.
+
+    - But in Redux-Toolkit, we don't need to use the Redux-Thunk library. Because Redux-Toolkit has built-in support for writing action creators as thunks. So we can use the Redux-Toolkit to write our action creators as thunks.
+
+    - We add applyMiddleware(thunk) to the createStore function. So we can use the Redux-Thunk library to write our action creators as thunks like we did in the previous example.
+
+   ```javascript
+
+   // store.js
+
+    import { createStore, applyMiddleware } from 'redux';
+    import thunk from 'redux-thunk';
+    import postsReducer from './reducers/postsReducer';
+
+    const store = createStore(postsReducer, applyMiddleware(thunk));
+
+    export default store;
+
+    ```
+
+ - What is th **_createAsyncThunk()_** function?
+
+    - Redux-Toolkit has a **_createAsyncThunk()_** function. We can use this function to write our action creators as thunks. 
+    - It takes **two** arguments. The first argument is the name of the thunk. And the second argument is a function that returns a promise. And the promise will be resolved with the value that we want to dispatch to the reducer.
+    - When we use the **_createAsyncThunk()_** function, it will automatically dispatch three actions for us. The first action is a pending action. The second action is a fulfilled action. And the third action is a rejected action. So we don't need to dispatch these actions manually.
+    - And we should add the **_extraReducers_** property to the slice. And then we can add the **_builder.addCase()_** method to the **_extraReducers_** property. And then we can add the **_action type_** and the **_callback function_** to the **_builder.addCase()_** method. 
+    - So when the action is dispatched, the callback function will be executed.
+
+    ```javascript
+
+    // postsSlice.js
+
+    import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+    const initialState = {
+      posts: [],
+      notification: {
+        status: "idle",
+        message: "",
+      },
+    };
+
+    export const sendPostData = createAsyncThunk(
+      "posts/sendPostData",
+      async (postData) => {
+        const response = await fetch(
+          "https://jsonplaceholder.typicode.com/posts",
+          {
+            method: "POST",
+            body: JSON.stringify(postData),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Something went wrong!");
+        }
+      }
+    );
+
+    const postSlice = createSlice({
+      name: "posts",
+      initialState,
+      reducers: {
+        // Other reducers
+      }
+      extraReducers: (builder) => {
+        builder.addCase(sendPostData.pending, (state, action) => {
+          state.notification.status = "pending";
+          state.notification.message = "Sending post data...";
+        });
+        builder.addCase(sendPostData.fulfilled, (state, action) => {
+          state.notification.status = "success";
+          state.notification.message = "Successfully sent post data!";
+        });
+        builder.addCase(sendPostData.rejected, (state, action) => {
+          state.notification.status = "error";
+          state.notification.message = action.error.message;
+        });
+      },
+    });
+
+
+### <span style="color: #c1121f;"> **_Conclusion_**</span>
+
+> * **Redux** & **@Redux-Toolkit** is a great tool for managing complex state in our applications.
+> * It based on the **Flux** architecture. It has a **single source of truth**, **unidirectional data flow**, and **immutable state**.
+> * **Redux** is a state management library. It has no any **_dependencies_**. So we can use it with any UI library or framework.
+> * Redux is a predictable state container. So we can predict what will happen in our application.
+> * Redux has **three main principles**. Single source of truth, state is read-only, and changes are made with pure functions.
+> * Redux has three main **building blocks**. Actions, Reducers, and Store.
+> * **Actions** are payloads of information that send data from our application to the store.
+> * **Reducers** specify how the application's state changes in response to actions sent to the store.
+> * The **Store** is the object that brings them together. The store has three main methods. getState(), dispatch(), and subscribe() in Redux. 
+> * Which we can use in React with the help of the **react-redux** library as **_useSelector()_** and **_useDispatch()_**.
+> * Redux-Toolkit is the official, opinionated, batteries-included toolset for efficient Redux development.
+> * Redux-Toolkit has built-in support for writing action creators as thunks.
+> * Redux-Toolkit has built-in support for writing immutable update logic for reducers. So we can write reducers as a mutable way. But Redux-Toolkit will take care of the immutability.
+> * Redux DevTools Extension is a great tool for debugging our Redux application.
+> * Redux allow us to use middleware. We can use middleware to write our action creators as thunks. We can use the Redux-Thunk library to write our action creators as thunks.
+> * We can use simply **_createAsyncThunk()_** function to write our action creators as thunks. And it will automatically dispatch three actions for us. The first action is a pending action. The second action is a fulfilled action. And the third action is a rejected action. So we don't need to dispatch these actions manually.
+
+<br/>
+
+### <span style="color: #c1121f;"> **_Last Words_**</span>
+
+> Thank you for reading, I hope you enjoyed it. 
+> If you have any questions, please feel free to contact me.
+> You can find my contact information on my [GitHub profile](https://github.com/yamisagi).
+> If you want to support me, you can give a star to this repository.
+> And you can follow me on [Twitter](https://twitter.com/_yamisagi).
+> Also appreciated any PR's to improve this document or fix any typo mistakes 🚀
+
+
+
+<br/>
+
+### <span style="color: #c1121f;"> **_References_**</span>
+
+- [Redux Documentation](https://redux.js.org/)
+
+- [Redux-Toolkit Documentation](https://redux-toolkit.js.org/)
+
+- [Redux-Thunk Documentation](https://github.com/reduxjs/redux-thunk)
+
+
+
