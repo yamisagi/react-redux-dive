@@ -80,7 +80,8 @@ In this project, I will be exploring the React Redux library. I will be using th
 - [x] Add [LICENSE](./LICENSE)
 - [x] Clean up code and add comments 🧹
 - [x] Willing to add CONTRIBUTING.md 
-- [x] Finish the project 🎉
+- [ ] Add Redux Saga to the ADVANCED.md
+- [ ] Add Middleware to the ADVANCED.md
 
 
 
