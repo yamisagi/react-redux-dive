@@ -537,11 +537,11 @@ const middleware = (store) => (next) => (action) => {
       - The **_takeEvery()_** function will run the saga every time the action is dispatched. So if we dispatch the action multiple times, the saga will run multiple times.
       - The **_takeLatest()_** function will run the saga only once. So if we dispatch the action multiple times, the saga will run only once. And it will cancel the previous saga. So we can use the **_takeLatest()_** function to prevent multiple API calls.
 
-  - What is the best solution for handling asynchronous actions in Redux? Redux-Thunk or Redux-Saga?
-    - There is no best solution for handling asynchronous actions in Redux. It depends on the project. If we have a simple project, we can use Redux-Thunk. If we have a complex project, we can use Redux-Saga. 
-    - Redux-Saga is a great tool for managing complex asynchronous actions in Redux. But it has a learning curve. So if we have a simple project, we can use Redux-Thunk. Because Redux-Thunk is simple and easy to use. 
-    - Redux-Thunk is easy to use. But it has some limitations. For example, we can't cancel the previous API call. So if we dispatch the action multiple times, the API call will be made multiple times. But in Redux-Saga, we can cancel the previous API call. So if we dispatch the action multiple times, the API call will be made only once. And etc.
-    - So, choose the best solution for your project based on your project requirements.
+- What is the best solution for handling asynchronous actions in Redux? Redux-Thunk or Redux-Saga?
+  - There is no best solution for handling asynchronous actions in Redux. It depends on the project. If we have a simple project, we can use Redux-Thunk. If we have a complex project, we can use Redux-Saga. 
+  - Redux-Saga is a great tool for managing complex asynchronous actions in Redux. But it has a learning curve. So if we have a simple project, we can use Redux-Thunk. Because Redux-Thunk is simple and easy to use. 
+  - Redux-Thunk is easy to use. But it has some limitations. For example, we can't cancel the previous API call. So if we dispatch the action multiple times, the API call will be made multiple times. But in Redux-Saga, we can cancel the previous API call. So if we dispatch the action multiple times, the API call will be made only once. And etc.
+  - So, choose the best solution for your project based on your project requirements.
 
 <br/>
 
