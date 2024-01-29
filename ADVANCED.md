@@ -450,7 +450,7 @@ const middleware = (store) => (next) => (action) => {
 
       // sagas/index.js
 
-      import { call, put, takeEvery } from 'redux-saga/effects';
+      import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 
       function* sendPostDataSaga(action) {
         try {
@@ -483,6 +483,12 @@ const middleware = (store) => (next) => (action) => {
 
       function* watchSendPostData() {
         yield takeEvery('SEND_POST', sendPostDataSaga);
+        
+        // We can also use takeLatest() function instead of takeEvery() function.
+        // If we use takeLatest() function, it will cancel the previous API call.
+        // So if we dispatch the action multiple times, the API call will be made only once.
+
+        // yield takeLatest('SEND_POST', sendPostDataSaga);
       }
 
       export function* rootSaga() {
